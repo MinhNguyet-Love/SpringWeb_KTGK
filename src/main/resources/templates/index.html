@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        .header {
+            background-color: #1a1a2e;
+            color: #fff;
+            padding: 30px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #ff6f61;
+        }
+
+        .header h2 {
+            margin: 10px 0 0;
+            font-size: 1.5em;
+            color: #ddd;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 40px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        .input-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        #userIdInput {
+            padding: 12px;
+            width: 220px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        #getUsersButton, #findUserButton {
+            padding: 12px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        #getUsersButton:hover, #findUserButton:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #777;
+        }
+
+        @media (max-width: 768px) {
+            .input-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            #userIdInput {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            #getUsersButton, #findUserButton {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h1>Minh Nguyệt Cute</h1>
+</div>
+<div class="container">
+    <div class="input-container">
+        <input type="number" id="userIdInput" placeholder="Enter User ID" />
+        <button id="findUserButton">Find User</button>
+    </div>
+    <button id="getUsersButton">Get All Users</button>
+
+    <table id="userTable">
+        <thead>
+        <tr>
+            <th>User ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>City</th>
+            <th>Country</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+<div class="footer">
+    <p>&copy; 2024 Minh Nguyệt. All rights reserved.</p>
+</div>
+
+<script>
+    function fetchUsers() {
+        fetch('http://localhost:8080/users')
+            .then(response => response.json())
+            .then(users => {
+                const userTableBody = document.querySelector('#userTable tbody');
+                userTableBody.innerHTML = '';
+
+                users.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                            <td>${user.userId}</td>
+                            <td>${user.firstName}</td>
+                            <td>${user.lastName}</td>
+                            <td>${user.email}</td>
+                            <td>${user.phoneNumber}</td>
+                            <td>${user.city}</td>
+                            <td>${user.country}</td>
+                        `;
+                    userTableBody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching users:', error);
+            });
+    }
+
+    function findUserById() {
+        const userId = document.getElementById('userIdInput').value;
+        fetch(`http://localhost:8080/users/${userId}`)
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('User not found');
+                }
+            })
+            .then(user => {
+                const userTableBody = document.querySelector('#userTable tbody');
+                userTableBody.innerHTML = '';
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                        <td>${user.userId}</td>
+                        <td>${user.firstName}</td>
+                        <td>${user.lastName}</td>
+                        <td>${user.email}</td>
+                        <td>${user.phoneNumber}</td>
+                        <td>${user.city}</td>
+                        <td>${user.country}</td>
+                    `;
+                userTableBody.appendChild(row);
+            })
+            .catch(error => {
+                console.error('Error finding user:', error);
+                alert(error.message);
+            });
+    }
+
+    document.getElementById('getUsersButton').addEventListener('click', fetchUsers);
+    document.getElementById('findUserButton').addEventListener('click', findUserById);
+</script>
+</body>
+</html>
