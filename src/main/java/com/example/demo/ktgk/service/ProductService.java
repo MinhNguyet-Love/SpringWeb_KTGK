@@ -1,7 +1,7 @@
-package com.example.ktgk.service;
+package com.example.demo.ktgk.service;
 
-import com.example.ktgk.model.Product;
-import com.example.ktgk.repository.ProductRepository;
+import com.example.demo.ktgk.model.Product;
+import com.example.demo.ktgk.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User List</title>
+    <title>Product List</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         body {
@@ -51,7 +51,7 @@
             margin-bottom: 20px;
         }
 
-        #userIdInput {
+        #productIdInput {
             padding: 12px;
             width: 220px;
             border: 1px solid #ccc;
@@ -60,7 +60,7 @@
             font-size: 16px;
         }
 
-        #getUsersButton, #findUserButton {
+        #getProductsButton, #findProductButton {
             padding: 12px 20px;
             font-size: 16px;
             color: white;
@@ -71,7 +71,7 @@
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
-        #getUsersButton:hover, #findUserButton:hover {
+        #getProductsButton:hover, #findProductButton:hover {
             background-color: #0056b3;
             transform: scale(1.05);
         }
@@ -111,12 +111,12 @@
                 align-items: center;
             }
 
-            #userIdInput {
+            #productIdInput {
                 width: 100%;
                 margin-bottom: 10px;
             }
 
-            #getUsersButton, #findUserButton {
+            #getProductsButton, #findProductButton {
                 width: 100%;
             }
         }
@@ -124,25 +124,25 @@
 </head>
 <body>
 <div class="header">
-    <h1>Minh Nguyệt Cute</h1>
+    <h1 style="color: hotpink">Minh Nguyệt Cute</h1>
 </div>
 <div class="container">
     <div class="input-container">
-        <input type="number" id="userIdInput" placeholder="Enter User ID" />
-        <button id="findUserButton">Find User</button>
+        <input type="number" id="productIdInput" placeholder="Enter Product ID" />
+        <button id="findProductButton">Find Product</button>
     </div>
-    <button id="getUsersButton">Get All Users</button>
+    <button id="getProductsButton">Get All Products</button>
 
-    <table id="userTable">
+    <table id="productTable">
         <thead>
         <tr>
-            <th>User ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Phone Number</th>
-            <th>City</th>
-            <th>Country</th>
+            <th>Product ID</th>
+            <th>Product Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Category ID</th>
+            <th>Image URL</th>
         </tr>
         </thead>
         <tbody>
@@ -154,65 +154,65 @@
 </div>
 
 <script>
-    function fetchUsers() {
-        fetch('http://localhost:8080/users')
+    function fetchProducts() {
+        fetch('http://localhost:8080/products')
             .then(response => response.json())
-            .then(users => {
-                const userTableBody = document.querySelector('#userTable tbody');
-                userTableBody.innerHTML = '';
+            .then(products => {
+                const productTableBody = document.querySelector('#productTable tbody');
+                productTableBody.innerHTML = '';
 
-                users.forEach(user => {
+                products.forEach(product => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                            <td>${user.userId}</td>
-                            <td>${user.firstName}</td>
-                            <td>${user.lastName}</td>
-                            <td>${user.email}</td>
-                            <td>${user.phoneNumber}</td>
-                            <td>${user.city}</td>
-                            <td>${user.country}</td>
+                            <td>${product.productId}</td>
+                            <td>${product.productName}</td>
+                            <td>${product.description}</td>
+                            <td>${product.price}</td>
+                            <td>${product.stock}</td>
+                            <td>${product.categoryId}</td>
+                            <td><a href="${product.imageUrl}" target="_blank">${product.imageUrl}</a></td>
                         `;
-                    userTableBody.appendChild(row);
+                    productTableBody.appendChild(row);
                 });
             })
             .catch(error => {
-                console.error('Error fetching users:', error);
+                console.error('Error fetching products:', error);
             });
     }
 
-    function findUserById() {
-        const userId = document.getElementById('userIdInput').value;
-        fetch(`http://localhost:8080/users/${userId}`)
+    function findProductById() {
+        const productId = document.getElementById('productIdInput').value;
+        fetch(`http://localhost:8080/products/${productId}`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
                 } else {
-                    throw new Error('User not found');
+                    throw new Error('Product not found');
                 }
             })
-            .then(user => {
-                const userTableBody = document.querySelector('#userTable tbody');
-                userTableBody.innerHTML = '';
+            .then(product => {
+                const productTableBody = document.querySelector('#productTable tbody');
+                productTableBody.innerHTML = '';
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                        <td>${user.userId}</td>
-                        <td>${user.firstName}</td>
-                        <td>${user.lastName}</td>
-                        <td>${user.email}</td>
-                        <td>${user.phoneNumber}</td>
-                        <td>${user.city}</td>
-                        <td>${user.country}</td>
+                        <td>${product.productId}</td>
+                        <td>${product.productName}</td>
+                        <td>${product.description}</td>
+                        <td>${product.price}</td>
+                        <td>${product.stock}</td>
+                        <td>${product.categoryId}</td>
+                        <td><a href="${product.imageUrl}" target="_blank">${product.imageUrl}</a></td>
                     `;
-                userTableBody.appendChild(row);
+                productTableBody.appendChild(row);
             })
             .catch(error => {
-                console.error('Error finding user:', error);
+                console.error('Error finding product:', error);
                 alert(error.message);
             });
     }
 
-    document.getElementById('getUsersButton').addEventListener('click', fetchUsers);
-    document.getElementById('findUserButton').addEventListener('click', findUserById);
+    document.getElementById('getProductsButton').addEventListener('click', fetchProducts);
+    document.getElementById('findProductButton').addEventListener('click', findProductById);
 </script>
 </body>
 </html>

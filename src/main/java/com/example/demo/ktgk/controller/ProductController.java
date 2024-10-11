@@ -1,6 +1,6 @@
-package com.example.ktgk.controller;
-import com.example.ktgk.model.Product;
-import com.example.ktgk.service.ProductService;
+package com.example.demo.ktgk.controller;
+import com.example.demo.ktgk.model.Product;
+import com.example.demo.ktgk.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

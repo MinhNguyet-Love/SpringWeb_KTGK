@@ -1,6 +1,6 @@
-package com.example.ktgk.repository;
+package com.example.demo.ktgk.repository;
 
-import com.example.ktgk.model.Product;
+import com.example.demo.ktgk.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 // Rename to ProductRepository

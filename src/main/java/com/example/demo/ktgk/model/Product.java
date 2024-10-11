@@ -1,4 +1,4 @@
-package com.example.ktgk.model;
+package com.example.demo.ktgk.model;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
